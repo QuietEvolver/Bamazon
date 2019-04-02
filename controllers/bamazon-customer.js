@@ -149,18 +149,6 @@ connection.query("SELECT * FROM products", function (err,results){
         }
       )};
 
-      function deleteProduct() {
-        console.table("Deleting given product information...\n");
-        connection.query(
-          "DELETE FROM products WHERE ?",
-          {
-            choice: results[i].ID
-          },
-          function(err, res) {
-            console.table(res.affectedRows + " products deleted!\n");
-            readProducts();
-          }
-        )};
         function readProducts() {
           console.table("Selecting all products...\n");
           connection.query("SELECT name_id, product_name, price FROM products", function(err, res, fields) {
