@@ -1,5 +1,5 @@
 /*
-Bamazon Manager JS Page
+Bamazon Customer JS Page
 I. Then create a Node application called `bamazonCustomer.js`. Running this application will first display all of the items available for sale.
 Include the ids, names, and prices of products for sale.
 II. The app should then prompt users with two messages.
@@ -20,7 +20,7 @@ IV. However, if your store _does_ have enough of the product, you should fulfill
      host: "localhost",
      port: 3306,
      user: "root",
-     password: "",
+     password: null,
      database: "bamazon_db"
    });
 
@@ -84,8 +84,8 @@ IV. However, if your store _does_ have enough of the product, you should fulfill
 
 
 function buyBamazonProduct() {
-connection.query("SELECT * FROM products", function (err,results){
-    if(err) throw err;
+
+    //if(err) throw err;
     inquirer
       .prompt([
           {
@@ -93,43 +93,64 @@ connection.query("SELECT * FROM products", function (err,results){
             type: "input",
             message: "what is the ID of the item you would like to purchase?"
           },
-          name: "itemChoice",
-          type: "rawlist",
-          choices: function(){
-            var choiceArray [];
-            for (var i = 0; i<results.length; i++) {
-              if(results[i].product_name===product_name.item_id)
-              choiceArray.push(results[i].product_name);
-            }
-            console.log(choiceArray);  //to CLI display array list of items
-          },
+        //   {
+        //   name: "itemChoice",
+        //   type: "rawlist",
+        //   choices: function(param){
+        //     console.log(param)
+        //     var choiceArray = [];
+        //     for (var i = 0; i<results.length; i++) {
+        //       console.log("this is the ruestls!!!!!!")
+        //       console.log(results[i].product_name)
+        //       // if(results[i].product_name === results.item_id)
+        //       // choiceArray.push(results[i].product_name);
+        //     }
+        //     console.log(choiceArray);  //to CLI display array list of items
+        //   }
+        // },
+    
           {
             name: "stock_quantity",
             type : "choice",
             message: "How many units of the product would youlike to buy?",
             validate: function (value){
-              if ((isNaN(value)===false)&&(value>0){
+              if (isNaN(value) === (false)&&(value>0)) {
                 return true;
               }
                 return false;
                 console.log(`Please enter a valid unit quantity by integer.`);
               }
             }
-          ],
-        ])
+          ]
+        )
         .then(function(answer) {
-          var chosenItemID;
-          for (var i = 1; i>=results.length; i++){
-            if (results[i].ID === answer.choice){
-              chosenItemID = results[i];
+          connection.query("SELECT * FROM products", function (err,results){
+          for (var i = 0; i<results.length; i++){
+            if (results[i].item_id == answer.ID){
+              chosenItemID = results[i].stock_quantity;
+              
+              if (chosenItemID >answer.stock_quantity){
+                console.log("WhAT TO GO")
+              }
+              else {
+                 console.log("Insufficient quantity!");
+              }   
+              //console.log(chosenItemID)
             }
           }
-          updateProduct();
-          var value = answer.quantity;
-          if ((isNaN(value)===false) <= chosenItemID.stock_quantity)){
-                console.log(`"Total price: "+results[i].quantity * answer.price`);
-          }
-      });
+        })
+      }
+        )}
+        
+
+      //     updateProduct();
+      //     // var value = answer.quantity;
+      //     // if ((isNaN(value)===false) <= chosenItemID.stock_quantity)){
+      //     //       console.log(`"Total price: "+results[i].quantity * answer.price`);
+      //     // }
+
+                // }
+
 
 
     function updateProduct() {
@@ -156,11 +177,13 @@ connection.query("SELECT * FROM products", function (err,results){
             console.table(res, fields); // Log said results of the SELECT statement
             connection.end();
           });
-          function query(command) {
-          command.query(err,results) => {
-            {
-             if (err) console.table(err);
-             if console.table("Result: " + result);
-           }
-         }
-        });
+        }
+        //   function ommand.querquery(command) {
+        //   cy(err,results) => {
+        //     {
+        //      if (err) console.table(err);
+        //      if console.table("Result: " + result);
+        //    }
+        //  }
+        // });
+//figure out how to make dynamic 
